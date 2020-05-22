@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: ebamk2_description
+    relative_path: urdf/ebamk2_mesh.urdf
+    xacro_args: ""
+  SRDF:
+    relative_path: config/ebamk2.srdf
+  CONFIG:
+    author_name: inaciose
+    author_email: inaciose@gmail.com
+    generated_timestamp: 1590141839
