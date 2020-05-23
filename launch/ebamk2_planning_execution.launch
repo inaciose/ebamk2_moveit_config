@@ -1,0 +1,35 @@
+<launch>
+
+  <!-- connect to micro controller -->
+  <arg name="baud" default="57600"/>
+  <arg name="port" default="/dev/ttyUSB0"/>         
+
+  <node pkg="rosserial_python" type="serial_node.py" name="init_serial_node">
+    <param name="baud" value="$(arg baud)"/>
+    <param name="port" value="$(arg port)"/>
+  </node>
+
+  <!-- load the joint names configuration file manualy created  -->
+  <rosparam command="load" file="$(find ebamk2_moveit_config)/config/joint_names.yaml"/>
+
+  <!-- load the robot_description parameter before launching ROS-I nodes -->
+  <include file="$(find ebamk2_moveit_config)/launch/planning_context.launch" >
+   <arg name="load_robot_description" value="true" />
+  </include>
+
+  <!-- run the actionlib moveit messages to robot hardware interface node -->
+  <node pkg="rosarm_control" type="eba_arm_control.py" name="arm_controller" output="screen"/>
+
+  <!-- publish the robot state (tf transforms) -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+  <!-- include automatic generated launch files -->
+  <include file="$(find ebamk2_moveit_config)/launch/move_group.launch">
+    <arg name="publish_monitored_planning_scene" value="true" />
+  </include>
+
+  <include file="$(find ebamk2_moveit_config)/launch/moveit_rviz.launch">
+    <arg name="rviz_config" value="true"/>
+  </include>
+
+</launch>
