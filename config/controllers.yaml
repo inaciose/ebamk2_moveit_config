@@ -3,5 +3,13 @@ controller_list:
   - name: arm_controller
     action_ns: follow_joint_trajectory
     type: FollowJointTrajectory
-    joints: [joint_1, joint_2, joint_3, joint_6]
-
+    joints: [joint_1, joint_2, joint_3]
+  - name: gripper_controller
+    action_ns: gripper_action
+    type: GripperCommand
+    joints: [joint_6]
+    action_monitor_rate: 20
+    goal_tolerance: 0.002
+    max_effort: 100
+    stall_velocity_threshold: 0.001
+    stall_timeout: 1.0
